@@ -337,6 +337,7 @@ Refer to [this guide](https://www.digitalocean.com/community/tutorials/how-to-se
 
 #### 12. Enable Service Workers
 [Enabling Service Worker in NGINX](https://blog.hasura.io/strategies-for-service-worker-caching-d66f3c828433)
+
 ....More details coming soon...
 
 
