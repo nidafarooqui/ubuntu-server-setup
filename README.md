@@ -141,21 +141,21 @@ This guide is written for my own future reference. These are basically notes I c
 Refer to the [nginx setup guide](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04) and the [server block guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-16-04) for more details.
 #### 1. Install nginx `apt install nginx`.
 #### 2. Set up server blocks for domains and sub domains.
-- make directories for your projects
+- Make the following directories for your projects:
 ```
 sudo mkdir -p /var/www/example.com/
 sudo mkdir -p /var/www/test.com/
 ```
- - change ownership of the directories to the user
+ - Change ownership of the directories to the user.
  ```
 sudo chown -R $USER:$USER /var/www/example.com/
 sudo chown -R $USER:$USER /var/www/test.com/
 ```
-  - Clone the repos from github inside each folder for `example.com` and `test.com`
+  - Clone the repos from github inside each folder for `example.com` and `test.com`.
 ```
 git clone https://github.com/nida/my_repo.git
 ```
- - Create server block config files for both domains
+ - Create server block config files for both domains.
 	- ```
 	  sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
       ```
@@ -166,18 +166,18 @@ git clone https://github.com/nida/my_repo.git
 		    `sudo vi /etc/nginx/sites-available/example.com`
 		    `sudo vi /etc/nginx/sites-available/test.com`
 		- *Make sure only one server block has the  `default_server`  option enabled.*
-		- change root to `root /var/www/example.com;`
-		- modify `server_name` to `server_name example.com www.example.com;`
-		- create symlinks from these files to the `sites-enabled` directory: 
+		- Change root to `root /var/www/example.com;`
+		- Modify `server_name` to `server_name example.com www.example.com;`
+		- Create symlinks from these files to the `sites-enabled` directory: 
 			      ```
 			      sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
 			      sudo ln -s /etc/nginx/sites-available/test.com /etc/nginx/sites-enabled/
 		          ```
-	- to avoid a possible hash bucket memory problem that can arise from adding additional server names, open nginx.conf
+	- To avoid a possible hash bucket memory problem that can arise from adding additional server names, open nginx.conf
 		     `sudo nano /etc/nginx/nginx.conf` 
 		     and find the `server_names_hash_bucket_size` directive. Remove the `#` symbol to uncomment the line: `server_names_hash_bucket_size 64;`
-	- test to make sure there are no errors `sudo nginx -t`
-	- restart nginx if no problems were found `sudo systemctl restart nginx`
+	- Test to make sure there are no errors `sudo nginx -t`
+	- Restart nginx if no problems were found `sudo systemctl restart nginx`
 #### 3. Alternative if you want to edit the `default` file and run a node app:
    Edit the `default` file in `/etc/nginx/sites-available/default` and change the line of `try_files $uri $uri/ =404;` to `proxy_pass http://127.0.0.1:3001;`, then run `sudo nginx -t` to make sure there are no syntax errors and restart nginx with `sudo service nginx restart`. You can then use `forever start app.js` to forever run the node app.
    [See here for more details on setting up a node app for production](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
@@ -229,7 +229,7 @@ gzip_comp_level 5
 -  [Understanding Nginx HTTP Proxying, Load Balancing, Buffering, and Caching](https://www.digitalocean.com/community/tutorials/understanding-nginx-http-proxying-load-balancing-buffering-and-caching)
 - [A Guide to Caching with NGINX and NGINX Plus](https://www.nginx.com/blog/nginx-caching-guide/)
   
-Inside `etc/nginx/sites-available/example.com` add this before the server block 
+Inside `etc/nginx/sites-available/example.com`, add this before the server block 
 ```
 #Expires map
 map $sent_http_content_type $expires {
@@ -264,10 +264,10 @@ The first directive is `proxy_cache_path`
 
 |Parameters for `proxy_cache_path`|Explanation|
 |--|--|
-|/tmp/nginx| where we want the cache (which is a file) to live `/tmp/nginx` tmp periodically gets cleaned by the filesystem so it's a good location.|
-|levels|how far and how many levels deep should the cache be within the file system i.e. `/static/cats/cute_cats/cat.jpeg` or just `static/cat1.jpeg` 
-|  keys_zone| the name of the cache and its size (10m is 10 Mb) |
-|  inactive| how long the cache should be inactive before it gets deleted |
+|/tmp/nginx| Where we want the cache (which is a file) to live `/tmp/nginx` tmp periodically gets cleaned by the filesystem so it's a good location.|
+|levels|How far and how many levels deep should the cache be within the file system i.e. `/static/cats/cute_cats/cat.jpeg` or just `static/cat1.jpeg`.
+|  keys_zone| The name of the cache and its size (10m is 10 Mb). |
+|  inactive| How long the cache should be inactive before it gets deleted. |
 |  use_temp_path = off| Instead of writing to a temporary file and then writing to the cache, keep it in memory and write it to cache. (If we have a lot of requests coming in we wouldn't set it to off) |
  
 #### Note about inactive:
@@ -281,8 +281,8 @@ The first directive is `proxy_cache_path`
 
 |Directives|Explanation|
 |--|--|
-|proxy_cache_valid | How long will the cache be valid before we expire it (1m is 1 minute) | 
-|proxy_ignore_headers | if you send `Cache-Control` as a header, it won't read the cache and get a fresh copy every time. So we ignore the `Cache-Control` header for the browser to get a cache copy on every page hit. Chrome by default sends `Cache-Control: No Cache` when you first hit a page to try and get a fresh copy. | 
+|proxy_cache_valid | How long will the cache be valid before we expire it (1m is 1 minute). | 
+|proxy_ignore_headers | If you send `Cache-Control` as a header, it won't read the cache and get a fresh copy every time. So we ignore the `Cache-Control` header for the browser to get a cache copy on every page hit. Chrome by default sends `Cache-Control: No Cache` when you first hit a page to try and get a fresh copy. | 
 |add_header|To add headers. Here we add `X-Proxy-Cache` and set it to to the value of the `$upstream_cache_status` variable. Basically, this sets a header that allows us to see if the request resulted in a cache hit, a cache miss, expired or more (see below for more detail). This is useful for debugging. On the first page load it should be a miss because nothing is cached, the second time it should be a hit.|
 |proxy_cache| The name of the cache file we are going to use|
 |proxy_pass|When a request matches a location with a `proxy_pass`directive inside, the request is forwarded to the URL given by the directive. (Refer to [this guide](https://www.digitalocean.com/community/tutorials/understanding-nginx-http-proxying-load-balancing-buffering-and-caching)) |
@@ -299,7 +299,7 @@ The following are the possible values for  [$upstream_cache_status](http://nginx
 |`EXPIRED`|The entry in the cache has expired. The response contains fresh content from the origin server.|
 |`STALE`| The content is stale because the origin server is not responding correctly, and  `proxy_cache_use_stale`  was configured.|
 |`UPDATING`|The content is stale because the entry is currently being updated in response to a previous request, and  `proxy_cache_use_stale updating`  is configured.|
-|`REVALIDATED`|The  `[proxy_cache_revalidate](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_revalidate)`  directive was enabled and NGINX verified that the current cached content was still valid (`If-Modified-Since`or  `If-None-Match`).|
+|`REVALIDATED`|The `[proxy_cache_revalidate](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_revalidate)`  directive was enabled and NGINX verified that the current cached content was still valid (`If-Modified-Since`or  `If-None-Match`).|
 | `HIT` |The response contains valid, fresh content direct from the cache.|
 
 
@@ -337,7 +337,6 @@ Refer to [this guide](https://www.digitalocean.com/community/tutorials/how-to-se
 
 #### 12. Enable Service Workers
 [Enabling Service Worker in NGINX](https://blog.hasura.io/strategies-for-service-worker-caching-d66f3c828433)
-
 ....More details coming soon...
 
 
