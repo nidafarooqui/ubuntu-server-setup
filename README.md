@@ -343,10 +343,17 @@ Refer to [this guide](https://www.digitalocean.com/community/tutorials/how-to-se
 -----------
 #### Some More Tutorials to Read
 Server optimization:
+
 [An Introduction to Load Testing](https://www.digitalocean.com/community/tutorials/an-introduction-to-load-testing)
+
 [How to Benchmark a Website with Firefox, Siege, and Sproxy On Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-benchmark-a-website-with-firefox-siege-and-sproxy-on-ubuntu-16-04)
+
 [How To Increase PageSpeed Score By Changing Your Nginx Configuration on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-increase-pagespeed-score-by-changing-your-nginx-configuration-on-ubuntu-16-04)
+
 [How To Install and Secure Memcached on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-memcached-on-ubuntu-16-04)
+
 For details on setting up a node or react app
+
 [Setting up a Node App for Production](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04)
+
 [Deploying a React App](https://www.digitalocean.com/community/tutorials/deploying-react-applications-with-webhooks-and-slack-on-ubuntu-16-04)
