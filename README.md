@@ -1,7 +1,7 @@
 
 # Ubuntu 16.04 Server Setup Guide
 
-This guide uses **Digital Ocean** to setup a server and deploy a React app with automated deployment using **nginx** and **TravisCI**.
+This guide is written for my own future reference. These are basically notes I compiled from the [FullStack Part 1](https://frontendmasters.com/courses/full-stack/) and [FullStack Part 2](https://frontendmasters.com/courses/full-stack-v2/) courses on Frontend Masters by @jemyoung. I use **Digital Ocean** to setup a server and deploy a NodeJs using **Nginx**.
 
 
 ## Basics to know (can be skipped)
@@ -337,6 +337,7 @@ Refer to [this guide](https://www.digitalocean.com/community/tutorials/how-to-se
 
 #### 12. Enable Service Workers
 [Enabling Service Worker in NGINX](https://blog.hasura.io/strategies-for-service-worker-caching-d66f3c828433)
+
 ....More details coming soon...
 
 
